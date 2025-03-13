@@ -9,7 +9,7 @@ name: Auto Build Transmission
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 6 * * *'  # svakodnevno u 06:15 UTC
+    - cron: '0 5 * * *'  # svakodnevno u 05:00 UTC
 
 env:
   PLATFORM: linux/arm/v7
@@ -30,17 +30,17 @@ jobs:
           bash ./fix-permissions.sh
 
       # Preuzimanje najnovije verzije Transmission-a s GitHub API-ja
-      - name: Get latest Transmission version from GitHub
+      - name: Get latest Transmission version
         id: get_version
         run: |
-          version=$(curl -s https://api.github.com/repos/transmission/transmission/releases/latest | jq -r '.tag_name')
-          if [ -z "$version" ]; then
+          TRANSMISSION_VERSION=$(curl -sL "http://dl-cdn.alpinelinux.org/alpine/edge/community/armv7/APKINDEX.tar.gz" | tar -xz -C /tmp && awk '/^P:transmission$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://')
+          if [ -z "$TRANSMISSION_VERSION" ]; then
             echo "Failed to fetch Transmission version."
             exit 1
           fi
-          echo "Transmission version fetched: $version"
-          echo "TRANSMISSION_VERSION=$version" >> $GITHUB_ENV
-          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "Transmission version fetched: $TRANSMISSION_VERSION"
+          echo "TRANSMISSION_VERSION=$TRANSMISSION_VERSION" >> $GITHUB_ENV
+          echo "version=$TRANSMISSION_VERSION" >> $GITHUB_OUTPUT
 
       # Postavljanje Docker Buildx s verzijom
       - name: Set up Docker Buildx
