@@ -13,11 +13,6 @@ chmod 755 root/etc/s6-overlay/s6-rc.d/init-transmission-config/run
 chmod 755 root/etc/s6-overlay/s6-rc.d/svc-transmission/run
 chmod 755 root/etc/s6-overlay/s6-rc.d/svc-transmission/finish
 
-./app/blocklist-update.sh
-./etc/s6-overlay/s6-rc.d/init-transmission-config/run
-./etc/s6-overlay/s6-rc.d/svc-transmission/run
-./etc/s6-overlay/s6-rc.d/svc-transmission/finish
-
 git add root/app/blocklist-update.sh
 git add root/etc/s6-overlay/s6-rc.d/init-transmission-config/run
 git add root/etc/s6-overlay/s6-rc.d/svc-transmission/run
