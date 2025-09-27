@@ -1,13 +1,6 @@
 # syntax=docker/dockerfile:1
 
-# FROM ghcr.io/linuxserver/unrar:latest as unrar
-# FROM ghcr.io/linuxserver/baseimage-alpine:edge
-# FROM mojrapid/alpine:edge_s6-arm32v7
 FROM mojrapid/baseimage:alpine-edge_s6_full
-
-# COPY root-out/ /
-
-# ENV HOME=/root
 
 ARG BUILD_DATE
 ARG VERSION
@@ -25,9 +18,7 @@ RUN \
     findutils \
     p7zip \
     python3 && \
-# ovo je moje***********
   echo "**** install unrar from source ****" && mkdir /tmp/unrar && curl -o /tmp/unrar.tar.gz -L "https://www.rarlab.com/rar/unrarsrc-${UNRAR_VERSION}.tar.gz" && tar xf /tmp/unrar.tar.gz -C /tmp/unrar --strip-components=1 && cd /tmp/unrar && make && install -v -m755 unrar /usr/bin && \
-# do tud****************
   echo "**** install transmission ****" && \
   if [ -z ${TRANSMISSION_VERSION+x} ]; then \
     TRANSMISSION_VERSION=$(curl -sL "http://dl-cdn.alpinelinux.org/alpine/edge/community/armv7/APKINDEX.tar.gz" | tar -xz -C /tmp \
